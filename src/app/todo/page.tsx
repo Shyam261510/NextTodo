@@ -35,7 +35,7 @@ function todo() {
           <button onClick={createTodo}>Add</button>
         </div>
       )}
-      <TodoData refresh={refresh} />
+      <TodoData refresh={refresh} setRefresh={setRefresh} />
     </div>
   );
 }
