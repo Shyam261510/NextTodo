@@ -12,7 +12,8 @@ interface TodoProp {
 const TodoData: React.FC<TodoProp> = ({ refresh, setRefresh }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [IsEditable, setIsEditable] = useState(false);
+const [editTosdoId,setEditableTodoId] = useState(null)
+  
   const [todos, setTodos] = useState([
     { _id: 1, content: "todo1" },
     { _id: 2, content: "todo2" },
@@ -70,6 +71,13 @@ const TodoData: React.FC<TodoProp> = ({ refresh, setRefresh }) => {
   //     setLoading(false);
   //   }
   // };
+  const editHandler = (id:string,content:string)=>{
+setTodos((prev:any) =>(
+  prev.map((todo:any)=>( 
+    todo._id === id ? {...todo,content:content} : todo
+  ))
+))
+  }
 
   return (
     <div>
@@ -79,14 +87,14 @@ const TodoData: React.FC<TodoProp> = ({ refresh, setRefresh }) => {
           <input
             type="text"
             value={todo.content}
-            readOnly={IsEditable}
+            readOnly={todo._id !== editTosdoId}
             onChange={(e) =>
-              setTodos((prev: any) => ({ ...prev, content: e.target.value }))
+              editHandler(todo._id,e.target.value)
             }
           />
           <div className="flex gap-2">
-            <button onClick={() => setIsEditable(true)}>edit</button>
-            <button onClick={() => (setIsEditable(false), console.log(todo))}>
+            <button onClick={() => setEditableTodoId(todo._id)}>edit</button>
+            <button onClick={() =>(setEditableTodoId(null),console.log(todo))}>
               save
             </button>
             <button onClick={() => updateTodo(todo._id, { completed: true })}>
